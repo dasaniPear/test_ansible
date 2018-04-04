@@ -1,0 +1,19 @@
+---
+ - hosts: B338E33
+   become: yes
+   tasks:
+    - name: Copie le fichier lxrandr-autostart.desktop vers l'hôte
+      copy:
+       src: /usr/local/ansible/roles/deploiement/files/lxrandr-autostart.desktop
+       dest: /usr/share/Start/lxrandr-autostart.desktop
+       owner: utilisateur
+       group: utilisateur
+       mode: 0664
+    - name: Ajoute les lignes au script start.sh qui automatisent la copie du fichier au démarrage
+      lineinfile:
+       path: /usr/local/bin/start.sh
+       insertafter: "{{item.insertafter}}"
+       line: "{{item.line}}"
+      with_items:
+       - {insertafter: "^\ttar -xf /usr/share/Start/homeUtilisateur.tar -C /", line: "\tmkdir /home/utilisateur/.config/autostart"}
+       - {insertafter: 'mkdir /home/utilisateur/.config/autostart', line: "\tcp /usr/share/Start/lxrandr-autostart.desktop /home/utilisateur/.config/autostart/"}
