@@ -1,0 +1,6 @@
+---
+ - hosts: home
+   tasks:
+   - name: Test et compte de nombre de machines disponibles
+     become: yes
+     ping:

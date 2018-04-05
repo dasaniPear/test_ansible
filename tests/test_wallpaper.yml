@@ -1,0 +1,18 @@
+---
+ - hosts: all
+   name: Changes the wallpaper for the tech account
+   become: yes 
+   tasks:
+    - name: Copie le fond d'écran vers le noeud
+      copy:
+       src: /usr/local/ansible/roles/deploiement/files/redR.png
+       dest: /usr/share/lubuntu/wallpapers/
+       owner: root
+       group: root
+       mode: 0777
+    - name: Task execution
+      become: yes
+      lineinfile:
+       path: /home/tech/.config/pcmanfm/lubuntu/desktop-items-0.conf
+       regexp: '^wallpaper=/*'
+       line: 'wallpaper=/usr/share/lubuntu/wallpapers/redR.png'

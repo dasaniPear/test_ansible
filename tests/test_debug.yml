@@ -1,0 +1,17 @@
+---
+ - hosts: home
+   tasks:
+    - name: Msg  
+      debug:
+       msg: "{{ansible_default_ipv4.macaddress}}"
+    - name: Command
+      shell: (ifconfig -a | grep 'ether' | awk '{print $2}' | head -1)
+      register: result
+    - name: Debug
+      debug:
+       msg: "Result: {{result.stdout}}"
+    - name: Copy result to file
+      local_action: copy content={{result.stdout}} dest=/home/utilisateur/Desktop/log.txt
+    - name: Msg  
+      debug:
+       msg: "{{ansible_default_ipv4.macaddress,ansible_default_ipv4.address}}"

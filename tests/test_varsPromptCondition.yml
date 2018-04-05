@@ -1,0 +1,16 @@
+---
+- name: Teste le fonctionnement de vars_prompt conditionnelement
+  hosts: all
+  gather_facts: no
+  vars_prompt:
+   - name: "input"
+     prompt: "Écrivez un message à afficher: "
+     private: no
+   - name: "input2"
+     prompt: "Écrivez un message à afficher: "
+     private: no
+  tasks:
+   - name: Affiche les inputs que s'ils sont identiques
+     debug:
+      msg: "{{input}} et {{input2}}"
+     when: (input == input2)

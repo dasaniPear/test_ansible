@@ -1,0 +1,11 @@
+---
+- name: Configure le BIOS des hôtes pour le déploiment des images (boot order: PXE)
+  hosts: all
+  become: yes
+  vars_prompt:
+   - name: "password"
+     prompt: "Quel est le mot de passe du BIOS?: "
+     private: yes
+  tasks:
+   - name: Execution de la commande de l'utilitaire Dell
+     shell: /opt/dell/dcc/cctk bootorder --sequence=embnic,hdd.1,usbdev --enabledevice=embnic --wakeonlan=lanwithpxeboot  --valsetuppwd={{password}}

@@ -1,0 +1,12 @@
+---
+ - hosts: home
+   tasks:
+   - name: Add muiltiple items in a single task
+     file:
+      path: /home/utilisateur/{{item}}
+      state: touch
+     with_items:
+      - test.txt
+      - test1.txt
+      - test2.txt
+      - holy cow.txt

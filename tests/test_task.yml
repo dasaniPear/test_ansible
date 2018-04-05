@@ -1,0 +1,29 @@
+---
+- hosts: B313
+  tasks:
+   - name: Test ping
+     ping:
+   - name: Autoclean
+     apt:
+      autoclean: yes
+   - name: Copy test script
+     become: yes
+     copy:
+      src: /home/utilisateur/script.sh
+      dest: /usr/local/bin/script.sh
+      owner: root
+      group: root
+      mode: 0700
+   - name: Run script.sh
+     become: yes
+     command: /usr/local/bin/script.sh
+   - name: Add to file created by script
+     become: yes
+     lineinfile: 
+      path: /home/utilisateur/Desktop/Ansible.txt
+      line: 'This validates the playbook.'
+   - name: Removes the script
+     become: yes
+     file:
+      path: /usr/local/bin/script.sh
+      state: absent

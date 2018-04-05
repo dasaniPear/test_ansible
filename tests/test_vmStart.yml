@@ -1,0 +1,16 @@
+---
+ - hosts: all
+   name: Démarre les machines viruelles originales
+   become: yes
+   vars:
+    vmWindows=/usr/local/VM/VMoriginales/windows10/Windows10.vmx
+    vmLinux=/usr/local/VM/VMoriginales/ubuntu/Ubuntu.vmx
+   tasks:
+   - name: Démarre la machine virtuelle Windows à l'aide de vmrun
+      shell: vmrun -T ws start {{vmWindows}} nogui
+   - name: sleep for 2 seconds and continue with play
+     wait_for: timeout=2
+   - name: Démarre la machine virtuelle Windows à l'aide de vmrun
+      shell: vmrun -T ws start {{vmLinux}} nogui
+   - name: sleep for 2 seconds and continue with play
+     wait_for: timeout=2
