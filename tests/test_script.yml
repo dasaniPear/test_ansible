@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: yes
+  vars:
+   path: /usr/local/ansible/roles/tests/files/touch.sh
+   path2: /usr/local/ansible/roles/tests/files/vmStartU.sh
+   test_file: /home/tech/Bureau/test.txt
+  tasks:
+  - name: stat collection
+    stat: 
+     path: '{{test_file}}'
+    register: test_creation
+  - name: Runs the touch.sh scripts on nodes
+    script: '{{path}}'
+  #  register: output
+    when: not test_creation.stat.exists
+  # notify: print_output
+  - name: Runs the vmStartU.sh scripts on nodes
+    script: '{{path2}}'
+    register: output
+    notify: print_output
+  handlers:
+  - name: print_output
+    debug:
+     msg: "Output: {{output.stdout_lines}}"
